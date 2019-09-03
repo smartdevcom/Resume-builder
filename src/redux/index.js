@@ -65,6 +65,9 @@ export function reducer(state = initialState, action) {
             case 'workHistory':
                updated_data = state.server_data.workHistory.push(action.server_data);
                break;
+            case 'education':
+               updated_data = state.server_data.education.push(action.server_data);
+               break;
             default:
                break;
          }
