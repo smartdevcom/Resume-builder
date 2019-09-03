@@ -76,7 +76,6 @@ function addData(field, json) {
 function* updateSaga(action) {
    try {
       const response = yield call(updateData, action.payload.field, action.payload.id, action.payload.json);
-      console.log(response.data);
       // dispatch a success action to the store with the new dog
       yield put({ type: API_UPDATE_SUCCESS, success: true });
    } catch (error) {
