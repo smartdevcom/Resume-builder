@@ -64,6 +64,15 @@ function updateData(field, id, json) {
    }
 }
 
+function addData(field, json) {
+   return axios({
+      method: 'POST',
+      headers: { 'x-api-key': X_API_KEY, 'Content-Type': 'application/json' },
+      url: `${POST_SERVER_URL}/${field}`,
+      data: json
+   });
+}
+
 function* updateSaga(action) {
    try {
       const response = yield call(updateData, action.payload.field, action.payload.id, action.payload.json);
@@ -100,15 +109,6 @@ function* getSaga(action) {
       // dispatch a failure action to the store with the error
       yield put({ type: API_CALL_FAILURE, error });
    }
-}
-
-function addData(field, json) {
-   return axios({
-      method: 'POST',
-      headers: { 'x-api-key': X_API_KEY, 'Content-Type': 'application/json' },
-      url: `${POST_SERVER_URL}/${field}`,
-      data: json
-   });
 }
 
 function* addSaga(action) {

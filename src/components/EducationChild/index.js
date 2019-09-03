@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Paper, Grid, Typography, Box, Button } from '@material-ui/core';
 import { AddOutlined } from '@material-ui/icons';
 import CustomInput from '../Input';
@@ -12,6 +12,7 @@ import CustomCheckbox from '../Checkbox';
 import { educationChildStyles } from './style';
 import CustomButton from '../Button';
 import SearchList from '../SearchList/SearchList';
+import RichEdit from '../RichEdit/RichEdit';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -32,6 +33,7 @@ function EducationChild(props) {
 	const [startDate, setStartDate] = useState('');
 	const [stateProvince, setStateProvince] = useState('');
 	const [flagInput, setFlagInput] = useState('');
+	const [summary, setSummary] = useState({});
 
 	const [cityLoading, setCityLoading] = useState('success');
 	const [countryLoading, setCountryLoading] = useState('success');
@@ -42,6 +44,8 @@ function EducationChild(props) {
 	const [degreeLoading, setDegreeLoading] = useState('success');
 
 	const [updateTimeouts, setUpdateTimeouts] = useState({});
+
+	const richEdit = useRef();
 
 	let index = 0;
 
@@ -67,6 +71,7 @@ function EducationChild(props) {
 		}
 		setStartDate(`${res[2]}-${res[0]}-${res[1]}`);
 		setStateProvince(server_data.education[index].stateProvince);
+		setSummary(server_data.education[index].summary);
 	}, [server_data]);
 
 	useEffect(() => {
@@ -189,6 +194,7 @@ function EducationChild(props) {
 			case 'startDate':
 			case 'endDate':
 			case 'currentSchool':
+			case 'summary':
 				deferApiCallUpdate(name, value);
 				break;
 			default:
@@ -197,7 +203,7 @@ function EducationChild(props) {
 	};
 
 	const handleSearchItemSelected = item => {
-		console.log(item);
+		richEdit.current.addParagraph(item.description);
 	}
 
 	return (
@@ -296,7 +302,15 @@ function EducationChild(props) {
 							/>
 						</Grid>
 						<Grid item xs={12} md={6}>
-							<CustomInput label='Study Details' placeholder='Description' multiline rows={24} />
+							<RichEdit
+								height={175}
+								placeholder='Description'
+								value={summary}
+								id='education'
+								name='summary'
+								onChange={handleChange}
+								ref={richEdit}
+								></RichEdit>
 						</Grid>
 						<Grid item xs={12} md={6}>
 							<SearchList height={460} onItemSelected={handleSearchItemSelected} resource='education-suggestions' />

@@ -26,12 +26,12 @@ let store = createStore(reducer, compose(applyMiddleware(sagaMiddleware)));
 sagaMiddleware.run(watcherSaga);
 
 ReactDOM.render(
-   <Provider store={store}>
-      <Router history={history}>
-         <App />
-      </Router>
-   </Provider>,
-   document.getElementById('root')
+	<Provider store={store}>
+		<Router history={history}>
+			<App />
+		</Router>
+	</Provider>,
+	document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change
