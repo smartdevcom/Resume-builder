@@ -53,7 +53,7 @@ function WorkChild() {
    // let index = 0;
 
    useEffect(() => {
-      setIndex(server_data.workHistory.length - 1);
+      setIndex(server_data.workHistory.length);
       setId(server_data.workHistory[index].id);
       setCity(server_data.workHistory[index].city);
       setCountry(server_data.workHistory[index].country);
