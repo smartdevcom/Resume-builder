@@ -21,7 +21,7 @@ function WorkChild() {
    const classes = workChildStyles();
    const dispatch = useDispatch();
    const query = useSelector(state => state);
-   const { fetching, server_data, error } = query;
+   const { fetching, server_data, activeIndex, error } = query;
 
    const [city, setCity] = useState('');
    // MS:
@@ -144,7 +144,7 @@ function WorkChild() {
          data[name] = value;
          dispatch({
             type: 'API_CALL_UPDATE',
-            payload: { field: 'workHistory', id: id, json: data }
+            payload: { field: 'workHistory', id: activeIndex.workHistory, json: data }
          });
       }, 500);
       updateTimeouts[name] = tout;
@@ -152,6 +152,7 @@ function WorkChild() {
    };
 
    const handleChange = e => {
+      console.log(index);
       let jsonValue = {};
       let name = e.target.name;
       let value = e.target.value;

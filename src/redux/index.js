@@ -77,6 +77,7 @@ export function reducer(state = initialState, action) {
             fetching: false
          };
       case API_CALL_CHANGE:
+         console.log(action.index);
          if (action.index !== undefined) {
             let index = action.index;
             let jsonValue1 = {};
