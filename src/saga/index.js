@@ -12,7 +12,8 @@ import {
    API_UPDATE_SUCCESS,
    API_CALL_GET,
    API_GET_SUCCESS,
-   API_CALL_ADD
+   API_CALL_ADD,
+   API_ADD_SUCCESS
 } from '../constants';
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
@@ -23,10 +24,10 @@ export function* watcherSaga() {
    yield put({ type: API_CALL_SUCCESS, server_data });
    yield takeLatest(API_CALL_REQUEST, workerSaga);
    yield takeLatest(API_CALL_UPDATE, updateSaga);
-   yield takeLatest(API_CALL_ADD, addDataSaga);
 
    //TODO: to be refactored
    yield takeLatest(API_CALL_GET, getSaga);
+   yield takeLatest(API_CALL_ADD, addSaga);
 }
 
 function fetchServerData() {
@@ -101,38 +102,31 @@ function* getSaga(action) {
    }
 }
 
-function* addDataSaga(action) {
-   console.log(action);
-   try {
-      console.log('json', action.payload.json);
-      const res = yield call(addData, action.payload.field, action.payload.json);
-      console.log('res', res);
-      const response = yield call(fetchServerData);
-      console.log('response', response);
-      const server_data = response.data;
-      let obj = {};
-      obj[action.payload.field] = action.payload.id - 1;
-      // dispatch a success action to the store with the new dog
-      yield put({ type: API_CALL_SUCCESS, server_data: server_data, activeIndex: obj });
-      // console.log(response);
-      // let server_data = {};
-      // server_data[action.payload.field] = [response.data];
-      // let obj = {};
-      // obj[action.payload.field] = action.payload.id;
-
-      // // dispatch a success action to the store with the new dog
-      // yield put({ type: API_GET_SUCCESS, server_data: server_data, activeIndex: obj });
-   } catch (error) {
-      // dispatch a failure action to the store with the error
-      yield put({ type: API_CALL_FAILURE, error });
-   }
-}
-
 function addData(field, json) {
    return axios({
-      method: 'post',
+      method: 'POST',
       headers: { 'x-api-key': X_API_KEY, 'Content-Type': 'application/json' },
       url: `${POST_SERVER_URL}/${field}`,
       data: json
    });
+}
+
+function* addSaga(action) {
+   try {
+      console.log(action);
+      const response = yield call(addData, action.payload.field, action.payload.json);
+      let server_data = {};
+      server_data = response.data;
+      console.log(response);
+      // dispatch a success action to the store with the new dog
+      yield put({
+         type: API_ADD_SUCCESS,
+         server_data: server_data,
+         field: action.payload.field,
+         activeIndex: action.payload.id
+      });
+   } catch (error) {
+      // dispatch a failure action to the store with the error
+      yield put({ type: API_CALL_FAILURE, error });
+   }
 }

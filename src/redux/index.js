@@ -10,7 +10,8 @@ import {
    API_UPDATE_FAILURE,
    API_CALL_GET,
    API_GET_SUCCESS,
-   API_CALL_ADD
+   API_CALL_ADD,
+   API_ADD_SUCCESS
 } from '../constants';
 
 // reducer with initial state
@@ -24,13 +25,12 @@ const initialState = {
       workHistory: [{}],
       skills: [{}]
    },
+   error: null,
+   success: null,
    activeIndex: {
       workHistory: 0,
-      education: 0,
-      skills: 0
-   },
-   error: null,
-   success: null
+      education: 0
+   }
 };
 
 export function reducer(state = initialState, action) {
@@ -38,16 +38,7 @@ export function reducer(state = initialState, action) {
       case API_CALL_REQUEST:
          return { ...state, error: null };
       case API_CALL_SUCCESS:
-         console.log('API_CALL_SUCCESS', {
-            ...state,
-            server_data: action.server_data,
-            activeIndex: { ...state.activeIndex, ...action.activeIndex }
-         });
-         return {
-            ...state,
-            server_data: action.server_data,
-            activeIndex: { ...state.activeIndex, ...action.activeIndex }
-         };
+         return { ...state, server_data: action.server_data };
       case API_CALL_FAILURE:
          return { ...state, server_data: null, error: action.error };
       case API_CALL_UPDATE:
@@ -62,6 +53,29 @@ export function reducer(state = initialState, action) {
          return { ...state, fetching: false, success: true };
       case API_UPDATE_FAILURE:
          return { ...state, fetching: false, success: false, error: action.error };
+      case API_CALL_ADD:
+         return { ...state, fetching: true, error: null };
+      case API_ADD_SUCCESS:
+         let updated_data = {};
+         let obj = {};
+         switch (action.field) {
+            case 'skills':
+               updated_data = state.server_data.skills.push(action.server_data);
+               break;
+            case 'workHistory':
+               updated_data = state.server_data.workHistory.push(action.server_data);
+               break;
+            default:
+               break;
+         }
+
+         obj[action.field] = action.activeIndex;
+         return {
+            ...state,
+            server_data: { ...state.server_data, ...updated_data },
+            activeIndex: { ...state.activeIndex, ...obj },
+            fetching: false
+         };
       case API_CALL_CHANGE:
          if (action.index !== undefined) {
             let index = action.index;
@@ -93,8 +107,6 @@ export function reducer(state = initialState, action) {
                }
             };
          }
-      case API_CALL_ADD:
-         return { ...state, error: null };
       default:
          return state;
    }

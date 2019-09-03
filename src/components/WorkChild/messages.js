@@ -9,8 +9,8 @@ import { defineMessages } from 'react-intl';
 export const scope = 'app.components.WorkChild';
 
 export default defineMessages({
-   header: {
-      id: `${scope}.header`,
-      defaultMessage: 'This is the WorkChild component!'
-   }
+  header: {
+    id: `${scope}.header`,
+    defaultMessage: 'This is the WorkChild component!',
+  },
 });

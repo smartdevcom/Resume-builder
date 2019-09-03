@@ -4,27 +4,28 @@
  *
  */
 
-import React, { memo } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import React from "react";
+// import PropTypes from 'prop-types';
+import MenuAppBar from "../../components/Appbar";
+import { Grid } from "@material-ui/core";
+import { finalizeChildStyles } from "./styles";
+import FinalizeChild from "../../components/FinalizeChild";
 
 export function Finalize() {
-	return (
-		<div>
-			<Helmet>
-				<title>Finalize</title>
-				<meta name='description' content='Description of Finalize' />
-			</Helmet>
-			<FormattedMessage {...messages.header} />
-		</div>
-	);
+  const classes = finalizeChildStyles();
+
+  return (
+    <Grid container justify="center" className={classes.main}>
+      <Grid item xs={10} md={11}>
+        <MenuAppBar />
+        <FinalizeChild />
+      </Grid>
+    </Grid>
+  );
 }
 
 Finalize.propTypes = {
-	dispatch: PropTypes.func.isRequired
+  // dispatch: PropTypes.func.isRequired,
 };
 
 export default Finalize;

@@ -21,7 +21,7 @@ function WorkChild() {
    const dispatch = useDispatch();
    const query = useSelector(state => state);
    const { fetching, server_data, activeIndex, error } = query;
-   const [index, setIndex] = useState(0);
+
    const [city, setCity] = useState('');
    // MS:
    const [country, setCountry] = useState('');
@@ -45,30 +45,32 @@ function WorkChild() {
 
    const [updateTimeouts, setUpdateTimeouts] = useState({});
 
-   console.log('index', index);
+   let index = 0;
+
    useEffect(() => {
-      console.log('activeIndex', activeIndex);
-      setIndex(activeIndex.workHistory);
-      setCity(server_data.workHistory[activeIndex.workHistory].city);
-      setCountry(server_data.workHistory[activeIndex.workHistory].country);
-      setCurrentWork(server_data.workHistory[activeIndex.workHistory].currentWork);
-      setEmployer(server_data.workHistory[activeIndex.workHistory].employer);
+      console.log(activeIndex);
+      index = server_data.workHistory.length - 1;
+      setId(server_data.workHistory[index].id);
+      setCity(server_data.workHistory[index].city);
+      setCountry(server_data.workHistory[index].country);
+      setCurrentWork(server_data.workHistory[index].currentWork);
+      setEmployer(server_data.workHistory[index].employer);
       let res = [];
-      if (server_data.workHistory[activeIndex.workHistory].endDate === undefined) {
+      if (server_data.workHistory[index].endDate === undefined) {
          res = ['', '', ''];
       } else {
-         res = server_data.workHistory[activeIndex.workHistory].endDate.split('/');
+         res = server_data.workHistory[index].endDate.split('/');
       }
       setEndDate(`${res[2]}-${res[0]}-${res[1]}`);
-      setId(server_data.workHistory[activeIndex.workHistory].id);
-      if (server_data.workHistory[activeIndex.workHistory].startDate === undefined) {
+      setId(server_data.workHistory[index].id);
+      if (server_data.workHistory[index].startDate === undefined) {
          res = ['', '', ''];
       } else {
-         res = server_data.workHistory[activeIndex.workHistory].startDate.split('/');
+         res = server_data.workHistory[index].startDate.split('/');
       }
       setStartDate(`${res[2]}-${res[0]}-${res[1]}`);
-      setStateProvince(server_data.workHistory[activeIndex.workHistory].stateProvince);
-      setWorkTitle(server_data.workHistory[activeIndex.workHistory].workTitle);
+      setStateProvince(server_data.workHistory[index].stateProvince);
+      setWorkTitle(server_data.workHistory[index].workTitle);
    }, [server_data]);
 
    useEffect(() => {
@@ -201,7 +203,8 @@ function WorkChild() {
 
    const handleAddWork = () => {
       console.log('server_data.workHistory', server_data.workHistory.length);
-      let index = server_data.workHistory.length + 1;
+      let index = Math.floor(Math.random() * 1000000);
+
       let obj = {
          id: index.toString(),
          workTitle: '',
@@ -318,7 +321,7 @@ function WorkChild() {
                      <CustomInput label='Work Details' placeholder='Description' multiline rows={24} />
                   </Grid>
                   <Grid item xs={12} md={6}>
-                     {/* <SearchList height={460} onItemSelected={handleSearchItemSelected} resource='work-suggestions' /> */}
+                     <SearchList height={460} onItemSelected={handleSearchItemSelected} resource='work-suggestions' />
                   </Grid>
                </Grid>
                <Grid item xs={12} style={{ marginTop: 32 }}>

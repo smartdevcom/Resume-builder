@@ -25,6 +25,7 @@ function SkillsChild() {
 	const [stateSkills, setStateSkills] = useState(initialValue);
 	let [skillsLoading, setskillsLoading] = useState([]);
 	const [flagInput, setFlagInput] = useState('');
+	const [lastID, setLastID] = useState(0);
 	const allowedState = [];
 
 	const [updateTimeouts, setUpdateTimeouts] = useState({});
@@ -35,6 +36,7 @@ function SkillsChild() {
 		allowedState.push({ id: item.id, name: item.name, rate: item.rate });
 		skills.push('success');
 		arrayValue.push('success');
+		if (lastID < parseInt(item.id)) setLastID(parseInt(item.id));
 	});
 	// skillsLoading = [...skills];
 
@@ -66,7 +68,7 @@ function SkillsChild() {
 			data[name] = value;
 			dispatch({
 				type: 'API_CALL_UPDATE',
-				payload: { field: 'skills', id: id, json: data }
+				payload: { field: 'skills', id: `${id}`, json: data }
 			});
 		}, 500);
 		updateTimeouts[name] = tout;
@@ -100,7 +102,7 @@ function SkillsChild() {
 				setFlagInput(index);
 				dispatch({
 					type: 'API_CALL_UPDATE',
-					payload: { field: 'skills', id: id, json: { rate: `${parseFloat(value) * 2}` } }
+					payload: { field: 'skills', id: `${id}`, json: { rate: `${parseFloat(value) * 2}` } }
 				});
 				break;
 			default:
@@ -108,12 +110,21 @@ function SkillsChild() {
 		}
 	};
 
+	const handleAddChange = e => {
+		dispatch({
+			type: 'API_CALL_ADD',
+			payload: { field: 'skills', json: { name: '', id: Math.floor(Math.random()*1000000), rate: `${parseFloat(0) * 2}` } }
+		});
+	}
+
+	console.log(stateSkills);
 	return (
 		<Paper className={classes.paper} elevation={0}>
 			<Grid container spacing={3}>
 				<Grid item md={8}>
 					<Grid container spacing={3} className={classes.container}>
 						{stateSkills.map((item, index) => {
+							if (!item.id) return null
 							return (
 								<React.Fragment key={index}>
 									<Grid item xs={12} md={6}>
@@ -151,7 +162,7 @@ function SkillsChild() {
 								</Button>
 							</Grid>
 							<Grid xs={12} md={2} item>
-								<Button variant='contained' color='default' fullWidth>
+								<Button variant='contained' color='default' fullWidth onClick={handleAddChange}>
 									<AddOutlined />
 									Add skill
 								</Button>
