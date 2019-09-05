@@ -7,29 +7,29 @@ import './App.css';
 import { useSelector, useDispatch } from 'react-redux';
 
 const App = () => {
-	const dispatch = useDispatch();
-	const query = useSelector(state => state);
-	const { fetching, dog, onRequestDog, error } = query;
-	const handleClick = e => dispatch({ type: 'API_CALL_REQUEST' });
-	return (
-		<div className='App'>
-			{/* <Hook /> */}
-			<header className='App-header'>
-				<img src={dog || logo} className='App-logo' alt='logo' />
-				<h1 className='App-title'>Welcome to Dog Saga</h1>
-			</header>
+   const dispatch = useDispatch();
+   const query = useSelector(state => state);
+   const { fetching, dog, onRequestDog, error } = query;
+   const handleClick = e => dispatch({ type: 'API_CALL_REQUEST' });
+   return (
+      <div className='App'>
+         {/* <Hook /> */}
+         <header className='App-header'>
+            <img src={dog || logo} className='App-logo' alt='logo' />
+            <h1 className='App-title'>Welcome to Dog Saga</h1>
+         </header>
 
-			{dog ? (
-				<p className='App-intro'>Keep clicking for new dogs</p>
-			) : (
-				<p className='App-intro'>Replace the React icon with a dog!</p>
-			)}
+         {dog ? (
+            <p className='App-intro'>Keep clicking for new dogs</p>
+         ) : (
+            <p className='App-intro'>Replace the React icon with a dog!</p>
+         )}
 
-			{fetching ? <button disabled>Fetching...</button> : <button onClick={handleClick}>Request a Dog</button>}
+         {fetching ? <button disabled>Fetching...</button> : <button onClick={handleClick}>Request a Dog</button>}
 
-			{error && <p style={{ color: 'red' }}>Uh oh - something went wrong!</p>}
-		</div>
-	);
+         {error && <p style={{ color: 'red' }}>Uh oh - something went wrong!</p>}
+      </div>
+   );
 };
 
 // const App = () => {

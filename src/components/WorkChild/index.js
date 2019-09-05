@@ -6,7 +6,7 @@
 
 import React, { memo, useState, useEffect, useRef } from 'react';
 import { AddOutlined } from '@material-ui/icons';
-import { Paper, Grid, Box, Button } from '@material-ui/core';
+import { Typography, Paper, Grid, Box, Button } from '@material-ui/core';
 import { workChildStyles } from './style';
 import CustomInput from '../Input';
 import CustomCheckbox from '../Checkbox';
@@ -29,6 +29,7 @@ function WorkChild() {
 	const [currentWork, setCurrentWork] = useState('');
 	const [employer, setEmployer] = useState('');
 	const [endDate, setEndDate] = useState('');
+	const [id, setId] = useState('');
 	const [startDate, setStartDate] = useState('');
 	const [stateProvince, setStateProvince] = useState('');
 	const [workTitle, setWorkTitle] = useState('');
@@ -48,13 +49,15 @@ function WorkChild() {
 
 	const richEdit = useRef();
 
-	let index = 0;
+   // let index = 0;
+   let index = 0;
 	index = server_data.workHistory.findIndex(x => x.id === activeIndex.workHistory.toString());
 	if(index === -1){
 		index = 0;
 	}
 
 	useEffect(() => {
+		setId(server_data.workHistory[index].id);
 		setCity(server_data.workHistory[index].city);
 		setCountry(server_data.workHistory[index].country)
 		setCurrentWork(server_data.workHistory[index].currentWork);
@@ -66,6 +69,7 @@ function WorkChild() {
 			res = server_data.workHistory[index].endDate.split('/');
 		}
 		setEndDate(`${res[2]}-${res[0]}-${res[1]}`);
+		setId(server_data.workHistory[index].id);
 		if (server_data.workHistory[index].startDate === undefined) {
 			res = ['', '', ''];
 		} else {
@@ -75,7 +79,7 @@ function WorkChild() {
 		setStateProvince(server_data.workHistory[index].stateProvince);
 		setWorkTitle(server_data.workHistory[index].workTitle);
 		setSummary(server_data.workHistory[index].summary);
-	}, [server_data, index]);
+	}, [server_data]);
 
 	useEffect(() => {
 		if (fetching) {
@@ -131,7 +135,7 @@ function WorkChild() {
 					break;
 			}
 		}
-	}, [fetching, flagInput]);
+	}, [fetching]);
 
 	const deferApiCallUpdate = (name, value) => {
 		let tout = updateTimeouts[name];

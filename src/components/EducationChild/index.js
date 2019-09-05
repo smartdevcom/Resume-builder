@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Paper, Grid, Box, Button } from '@material-ui/core';
+import { Paper, Grid, Typography, Box, Button } from '@material-ui/core';
 import { AddOutlined } from '@material-ui/icons';
 import CustomInput from '../Input';
 import CustomCheckbox from '../Checkbox';

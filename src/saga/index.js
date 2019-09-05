@@ -113,11 +113,9 @@ function* getSaga(action) {
 
 function* addSaga(action) {
    try {
-      console.log(action);
       const response = yield call(addData, action.payload.field, action.payload.json);
       let server_data = {};
       server_data = response.data;
-      console.log(response);
       // dispatch a success action to the store with the new dog
       yield put({
          type: API_ADD_SUCCESS,
