@@ -81,6 +81,8 @@ function addData(field, json) {
    });
 }
 
+//calling updating function
+
 function* updateSaga(action) {
    try {
       const response = yield call(updateData, action.payload.field, action.payload.id, action.payload.json);
