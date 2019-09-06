@@ -39,6 +39,8 @@ function fetchServerData() {
    });
 }
 
+//getting data from server by resource
+
 function fetchData(resource, params) {
    return axios({
       method: 'GET',
