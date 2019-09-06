@@ -70,6 +70,8 @@ function updateData(field, id, json) {
    }
 }
 
+//adding data
+
 function addData(field, json) {
    return axios({
       method: 'POST',
