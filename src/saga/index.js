@@ -30,6 +30,8 @@ export function* watcherSaga() {
    yield takeLatest(API_CALL_ADD, addSaga);
 }
 
+//getting all data from server
+
 function fetchServerData() {
    return axios({
       method: 'get',
