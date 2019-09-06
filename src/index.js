@@ -22,7 +22,6 @@ const history = createBrowserHistory();
 // create a redux store with our reducer above and middleware
 let store = createStore(reducer, compose(applyMiddleware(sagaMiddleware)));
 
-
 // run the saga
 sagaMiddleware.run(watcherSaga);
 
