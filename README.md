@@ -7,4 +7,4 @@ Only using frontend and api from backend(as3 server)
 
 ### npm start
 
-Application will run at [http://localhost:3001](http://localhost:3001)
+Application will run at [http://localhost:3000](http://localhost:3000)
